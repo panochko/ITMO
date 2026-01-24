@@ -1,2 +1,2 @@
 # ITMO
-labs and reports
+Software Engineering and Computer Technology
