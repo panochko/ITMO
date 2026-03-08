@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "name": "Anastasiya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 2,
+    "name": "Zhenya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 3,
+    "name": "Anastasiya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 4,
+    "name": "Zhenya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 5,
+    "name": "Anton",
+    "coordinates": {
+      "x": 1,
+      "y": 272.0
+    },
+    "salary": 389000,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 75.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Saint P"
+      }
+    }
+  }
+]
