@@ -174,9 +174,17 @@ public final class ExecuteScript extends AbstractCommand {
         var person = new Person(workerWeight, location);
         var localDateTime = LocalDateTime.now();
         var localDate = LocalDate.now();
-        Worker.resetGenerator(collection);
-        Worker worker = new Worker(workerName, coordinates, localDateTime, workerSalary, localDate, position, status, person);
-        collection.add(worker);
-        System.out.println("Новый работник добавлен в коллекцию");
+        if (arguments.equals("ArrayList") || arguments.equals("TreeSet") || arguments.equals("PriorityQueue")) {
+            Worker.resetGenerator(collection);
+            Worker worker = new Worker(workerName, coordinates, localDateTime, workerSalary, localDate, position, status, person);
+            collection.add(worker);
+            System.out.println("Новый работник добавлен в коллекцию");
+        }
+        else {
+            Worker.resetGenerator(mapCollection);
+            Worker worker = new Worker(workerName, coordinates, localDateTime, workerSalary, localDate, position, status, person);
+            mapCollection.put(worker.getId(), worker);
+            System.out.println("Новый работник добавлен в коллекцию");
+        }
     }
 }
