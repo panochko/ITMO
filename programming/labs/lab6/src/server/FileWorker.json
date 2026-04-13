@@ -1,0 +1,302 @@
+[
+  {
+    "id": 1,
+    "name": "Anastasiya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 2,
+    "name": "Zhenya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 3,
+    "name": "jdsjd",
+    "coordinates": {
+      "x": 1,
+      "y": 1.0
+    },
+    "salary": 1,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 222.0,
+      "location": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+        "name": "kskdsn"
+      }
+    }
+  },
+  {
+    "id": 4,
+    "name": "Anastasiya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 5,
+    "name": "Zhenya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 6,
+    "name": "Anastasiya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 7,
+    "name": "Zhenya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 8,
+    "name": "Anastasiya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 9,
+    "name": "Zhenya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 10,
+    "name": "Anastasiya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 11,
+    "name": "Zhenya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 12,
+    "name": "Anastasiya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 13,
+    "name": "Zhenya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 14,
+    "name": "Anastasiya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  },
+  {
+    "id": 15,
+    "name": "Zhenya",
+    "coordinates": {
+      "x": 1,
+      "y": 274.0
+    },
+    "salary": 300,
+    "position": "DEVELOPER",
+    "status": "HIRED",
+    "person": {
+      "weight": 20.0,
+      "location": {
+        "x": 1,
+        "y": 2,
+        "z": 3,
+        "name": "Severodvinsk"
+      }
+    }
+  }
+]
