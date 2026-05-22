@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gui.WorkerFormController">
+
+    <center>
+        <VBox spacing="15">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <TitledPane text="Основная информация">
+                <VBox spacing="10">
+                    <HBox spacing="10">
+                        <Label text="Имя:" prefWidth="120"/>
+                        <TextField fx:id="nameField" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                </VBox>
+            </TitledPane>
+
+            <TitledPane text="Координаты">
+                <HBox spacing="10">
+                    <VBox spacing="5">
+                        <Label text="X:"/>
+                        <TextField fx:id="xField" prefWidth="80"/>
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Y:"/>
+                        <TextField fx:id="yField" prefWidth="80"/>
+                    </VBox>
+                </HBox>
+            </TitledPane>
+
+            <TitledPane text="Работа">
+                <VBox spacing="10">
+                    <HBox spacing="10">
+                        <Label text="Зарплата:" prefWidth="120"/>
+                        <TextField fx:id="salaryField" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <Label text="Должность:" prefWidth="120"/>
+                        <ComboBox fx:id="positionCombo" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <Label text="Статус:" prefWidth="120"/>
+                        <ComboBox fx:id="statusCombo" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                </VBox>
+            </TitledPane>
+
+            <TitledPane text="Информация о человеке" expanded="false">
+                <VBox spacing="10">
+                    <HBox spacing="10">
+                        <Label text="Вес:" prefWidth="120"/>
+                        <TextField fx:id="personWeightField" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                </VBox>
+            </TitledPane>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+
+            <Button text="%button.logout" onAction="#handleCancel"/>
+            <Button text="%button.add" onAction="#handleSave" styleClass="primary-button"/>
+        </HBox>
+    </bottom>
+</BorderPane>
