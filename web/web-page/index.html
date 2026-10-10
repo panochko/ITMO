@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ЛР №1 — Паночко А. В.</title>
+    <style>
+        :root {
+            --bg: #150f27;
+            --panel: rgba(18, 4, 4, 0.82);
+            --field: rgba(255, 255, 255, 0.08);
+            --line: rgba(255, 255, 255, 0.28);
+            --text: #ffffff;
+            --accent: #d32f2f;
+            --accent-hover: #e53935;
+            --error: #ff8a80;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            color: var(--text);
+            background: var(--bg) url("bg.jpeg") center / cover no-repeat fixed;
+            min-height: 100vh;
+        }
+
+        #header {
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 20px;
+            color: #ffffff;
+            padding: 18px 24px;
+            background: #622223;
+            border-bottom: 3px solid #3f1415;
+        }
+
+        #header .info span {
+            display: inline-block;
+            margin-right: 24px;
+        }
+
+        #header .info span.label {
+            font-size: 14px;
+            margin-right: 6px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            padding: 24px;
+        }
+
+        .block {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .block h2 {
+            margin: 0 0 12px 0;
+            font-size: 18px;
+            font-weight: normal;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        #plot-block { flex: 0 0 auto; }
+        #form-block { flex: 1 1 300px; max-width: 380px; }
+        #clock-block { flex: 0 0 auto; }
+        #results-block { flex: 1 1 100%; }
+
+        .plot-wrap {
+            position: relative;
+            width: 460px;
+            max-width: 100%;
+        }
+
+        canvas {
+            display: block;
+            max-width: 100%;
+            border: 1px solid var(--line);
+            background: #160c14;
+        }
+
+        #plot { cursor: crosshair; }
+
+        .plot-status {
+            min-height: 20px;
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .hint {
+            margin: 8px 0 0 0;
+            font-size: 13px;
+        }
+
+        #tooltip {
+            position: absolute;
+            display: none;
+            min-width: 170px;
+            padding: 8px 12px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text);
+            background: rgba(20, 8, 14, 0.96);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        #tooltip .tt-note { margin-top: 4px; }
+
+        .field { margin-bottom: 16px; }
+
+        .field > label,
+        .field > .caption {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        select,
+        input[type="text"] {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 8px 10px;
+            margin: 0;
+            font-size: 16px;
+            color: var(--text);
+            background: var(--field);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+        }
+
+        select option {
+            color: #000000;
+        }
+
+        select:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.4);
+        }
+
+        input.invalid {
+            border-color: var(--error);
+            background: rgba(211, 47, 47, 0.2);
+        }
+
+        .radio-group label {
+            display: inline-block;
+            margin: 0 12px 4px 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .radio-group input {
+            margin: 0 4px 0 0;
+            accent-color: var(--accent);
+        }
+
+        .error {
+            min-height: 18px;
+            margin-top: 4px;
+            font-size: 14px;
+            color: var(--error);
+        }
+
+        .buttons button {
+            padding: 8px 16px;
+            margin: 0 8px 8px 0;
+            font-size: 15px;
+            color: #ffffff;
+            background: #622223;
+            border: 1px solid #8c3335;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .buttons button:hover { background: #7b2a2c; }
+
+        .buttons button:disabled {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+        }
+
+        .buttons button.secondary {
+            background: transparent;
+            border: 1px solid #ffffff;
+        }
+
+        .buttons button.secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .clock-digital {
+            margin-top: 8px;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+
+        .legend {
+            margin: 10px 0 0 0;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        #tz-info {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .table-scroll { overflow-x: auto; }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            text-align: center;
+        }
+
+        th {
+            background: rgba(211, 47, 47, 0.45);
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.05); }
+        tbody tr:hover { background: rgba(255, 255, 255, 0.12); }
+
+        td.hit-true,
+        td.hit-false {
+            color: #ffffff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<header id="header">
+    <div class="info">
+        <span>Паночко Антон Васильевич</span>
+        <span><span class="label">Группа</span>P3211</span>
+        <span><span class="label">Вариант</span>12679</span>
+    </div>
+</header>
+
+<main class="wrapper">
+    <section class="block" id="plot-block">
+        <h2>Область</h2>
+        <div class="plot-wrap">
+            <canvas id="plot" width="460" height="460"></canvas>
+            <div id="tooltip"></div>
+        </div>
+        <div class="plot-status" id="plot-status"></div>
+        <p class="hint">Колёсико — масштаб. Двойной клик — поставить точку в ближайшей вершине сетки. Клик по точке — информация, второй клик — в таблицу.</p>
+        <div class="buttons" style="margin-top: 8px;">
+            <button type="button" id="zoom-reset-btn" class="secondary">Сбросить масштаб</button>
+        </div>
+    </section>
+
+    <section class="block" id="form-block">
+        <h2>Параметры точки</h2>
+        <form id="point-form" novalidate>
+            <div class="field">
+                <label for="x-select">X</label>
+                <select id="x-select" name="x">
+                    <option value="" disabled selected>Выберите X</option>
+                    <option value="-5">-5</option>
+                    <option value="-4">-4</option>
+                    <option value="-3">-3</option>
+                    <option value="-2">-2</option>
+                    <option value="-1">-1</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+                <div class="error" id="x-error"></div>
+            </div>
+
+            <div class="field">
+                <label for="y-input">Y (от -5 до 3, не включая границы)</label>
+                <input type="text" id="y-input" name="y" autocomplete="off" maxlength="24" placeholder="Например, 1.5">
+                <div class="error" id="y-error"></div>
+            </div>
+
+            <div class="field">
+                <span class="caption">R</span>
+                <div class="radio-group" id="r-group">
+                    <label><input type="radio" name="r" value="1">1</label>
+                    <label><input type="radio" name="r" value="1.5">1.5</label>
+                    <label><input type="radio" name="r" value="2">2</label>
+                    <label><input type="radio" name="r" value="2.5">2.5</label>
+                    <label><input type="radio" name="r" value="3">3</label>
+                </div>
+                <div class="error" id="r-error"></div>
+            </div>
+
+            <div class="buttons">
+                <button type="submit" id="submit-btn">Проверить</button>
+                <button type="button" id="reset-btn" class="secondary">Очистить форму</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="block" id="clock-block">
+        <h2>Часы</h2>
+        <canvas id="clock" width="360" height="360"></canvas>
+        <div class="clock-digital" id="clock-digital"></div>
+        <p class="legend">
+            <span>●</span> до полудня (<span id="am-label">AM</span>) &nbsp; <span>■</span> после полудня (<span id="pm-label">PM</span>)<br>
+            Зелёная метка — попал, красная — мимо<br>
+            Метка стоит там, где была стрелка в момент проверки.
+        </p>
+    </section>
+
+    <section class="block" id="results-block">
+        <h2>Результаты</h2>
+        <div id="tz-info"></div>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>R</th>
+                    <th>Попадание</th>
+                    <th>Дата и время</th>
+                </tr>
+                </thead>
+                <tbody id="results-body"></tbody>
+            </table>
+        </div>
+        <div class="buttons" style="margin-top: 12px;">
+            <button type="button" id="clear-history-btn" class="secondary">Очистить историю</button>
+        </div>
+    </section>
+</main>
+
+<script>
+    window.addEventListener('error', function (e) {
+        var box = document.getElementById('load-error');
+        if (!box) {
+            box = document.createElement('div');
+            box.id = 'load-error';
+            box.style.cssText = 'position:fixed;left:0;right:0;bottom:0;padding:12px 24px;background:#b00020;color:#ffffff;font:14px Arial,sans-serif;z-index:100';
+            document.body.appendChild(box);
+            box.textContent = 'Ошибка скрипта: ' + (e.message || 'неизвестная ошибка') + (e.lineno ? ' (строка ' + e.lineno + ')' : '');
+        }
+    }, true);
+</script>
+<script>
+    'use strict';
+
+    (function () {
+
+        const STORAGE_KEY = 'lab1:results:v2';
+        const OLD_STORAGE_KEY = 'lab1:results:v1';
+        const Y_MIN = -5;
+        const Y_MAX = 3;
+        const X_VALUES = [-5, -4, -3, -2, -1, 0, 1, 2, 3];
+        const R_VALUES = [1, 1.5, 2, 2.5, 3];
+        const DEFAULT_R = 2;
+        const ZOOM_MIN = 0.25;
+        const ZOOM_MAX = 12;
+        const R_PIXELS = 150;
+
+        function getLocale() {
+            // локаль по умолчанию, которую браузер получил от системы
+            return new Intl.DateTimeFormat().resolvedOptions().locale;
+        }
+
+        const COLORS = {
+            bg: '#160c14',
+            grid: 'rgba(255, 255, 255, 0.12)',
+            axis: '#ffffff',
+            figure: 'rgba(80, 140, 255, 0.6)',
+            figureStroke: '#ffffff',
+            rMark: '#ffffff',
+            tick: '#ffffff',
+            hit: '#4de3a2',
+            miss: '#ff5b5b',
+            select: '#ffffff'
+        };
+
+        const form = document.getElementById('point-form');
+        const xSelect = document.getElementById('x-select');
+        const yInput = document.getElementById('y-input');
+        const rGroup = document.getElementById('r-group');
+        const xError = document.getElementById('x-error');
+        const yError = document.getElementById('y-error');
+        const rError = document.getElementById('r-error');
+        const submitBtn = document.getElementById('submit-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const clearHistoryBtn = document.getElementById('clear-history-btn');
+        const zoomResetBtn = document.getElementById('zoom-reset-btn');
+        const resultsBody = document.getElementById('results-body');
+        const tzInfo = document.getElementById('tz-info');
+        const tooltip = document.getElementById('tooltip');
+        const plotStatus = document.getElementById('plot-status');
+        const clockDigital = document.getElementById('clock-digital');
+        const amLabel = document.getElementById('am-label');
+        const pmLabel = document.getElementById('pm-label');
+        const canvas = document.getElementById('plot');
+        const ctx = canvas.getContext('2d');
+        const clockCanvas = document.getElementById('clock');
+        const cctx = clockCanvas.getContext('2d');
+
+        let results = loadResults();
+        let lastRaw = readRaw();
+        let lastTableText = '';
+        let zoom = 1;
+        let selectedId = null;
+        let plotPoints = [];
+
+        function isHit(x, y, r) {
+            if (x <= 0 && y >= 0) {
+                return y <= x + r;
+            }
+            if (x <= 0 && y <= 0) {
+                return x >= -r && y >= -r;
+            }
+            if (x >= 0 && y <= 0) {
+                return x * x + y * y <= r * r;
+            }
+            return false;
+        }
+
+        function normalizeY(raw) {
+            return raw.trim().replace(',', '.');
+        }
+
+        function parseY(raw) {
+            const s = normalizeY(raw);
+            if (s === '') {
+                return { error: 'Введите Y' };
+            }
+            if (!/^-?\d+(\.\d+)?$/.test(s)) {
+                return { error: 'Y должен быть числом (например, -2.5)' };
+            }
+            const value = Number(s);
+            if (!Number.isFinite(value) || !(value > Y_MIN && value < Y_MAX)) {
+                return { error: 'Y должен быть в интервале (' + Y_MIN + '; ' + Y_MAX + ')' };
+            }
+            return { value: value, raw: s };
+        }
+
+        function getSelectedR() {
+            const checked = rGroup.querySelector('input[name="r"]:checked');
+            if (!checked) {
+                return null;
+            }
+            const v = String(checked.value).trim();
+            return /^\d+(\.\d+)?$/.test(v) ? Number(v) : NaN;
+        }
+
+        function validateX(showEmpty) {
+            const v = xSelect.value;
+            if (v === '') {
+                xError.textContent = showEmpty ? 'Выберите X' : '';
+                return null;
+            }
+            const n = /^-?\d+$/.test(v.trim()) ? Number(v) : NaN;
+            if (!X_VALUES.includes(n)) {
+                xError.textContent = 'Недопустимое значение X';
+                return null;
+            }
+            xError.textContent = '';
+            return n;
+        }
+
+        function validateY(showEmpty) {
+            const res = parseY(yInput.value);
+            if (res.error) {
+                const empty = yInput.value.trim() === '';
+                yError.textContent = empty && !showEmpty ? '' : res.error;
+                yInput.classList.toggle('invalid', !empty || showEmpty);
+                return null;
+            }
+            yError.textContent = '';
+            yInput.classList.remove('invalid');
+            return res;
+        }
+
+        function validateR(showEmpty) {
+            const r = getSelectedR();
+            if (r === null) {
+                rError.textContent = showEmpty ? 'Выберите R' : '';
+                return null;
+            }
+            if (!R_VALUES.includes(r)) {
+                rError.textContent = 'Недопустимое значение R';
+                return null;
+            }
+            rError.textContent = '';
+            return r;
+        }
+
+        function updateSubmitState() {
+            const ok = validateX(false) !== null && validateY(false) !== null && validateR(false) !== null;
+            submitBtn.disabled = !ok;
+        }
+
+        function fmtShort(value, maxDecimals) {
+            const n = Number(value);
+            const short = Number(n.toFixed(maxDecimals));
+            const s = new Intl.NumberFormat(getLocale(), {
+                maximumFractionDigits: maxDecimals,
+                useGrouping: false
+            }).format(short === 0 ? 0 : short);
+            return short === n ? s : '≈' + s;
+        }
+
+        function fmtFull(raw) {
+            const parts = new Intl.NumberFormat(getLocale()).formatToParts(1.5);
+            const decimal = parts.find(function (p) { return p.type === 'decimal'; });
+            return String(raw).replace('.', decimal ? decimal.value : '.');
+        }
+
+        function formatDate(ts) {
+            return new Date(ts).toLocaleString(getLocale(), {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZoneName: 'short'
+            });
+        }
+
+        function currentR() {
+            const r = getSelectedR();
+            return R_VALUES.includes(r) ? r : DEFAULT_R;
+        }
+
+        function niceStep(range, targetTicks) {
+            const raw = range / targetTicks;
+            const pow = Math.pow(10, Math.floor(Math.log10(raw)));
+            const f = raw / pow;
+            return (f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10) * pow;
+        }
+
+        function drawPlot() {
+            const w = canvas.width;
+            const h = canvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+            const r = currentR();
+            const unit = (R_PIXELS / r) * zoom;
+            const half = cx / unit;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = COLORS.bg;
+            ctx.fillRect(0, 0, w, h);
+
+            const step = niceStep(half * 2, 8);
+            const xStep = Math.max(1, step);
+            const decimals = Math.max(0, -Math.floor(Math.log10(step) + 1e-9));
+            const n = Math.floor(half / step);
+            const nx = Math.floor(half / xStep);
+
+            ctx.strokeStyle = COLORS.grid;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            for (let i = -nx; i <= nx; i++) {
+                if (i === 0) { continue; }
+                const p = i * xStep * unit;
+                ctx.moveTo(cx + p, 0);
+                ctx.lineTo(cx + p, h);
+            }
+            for (let j = -n; j <= n; j++) {
+                if (j === 0) { continue; }
+                const p = j * step * unit;
+                ctx.moveTo(0, cy - p);
+                ctx.lineTo(w, cy - p);
+            }
+            ctx.stroke();
+
+            ctx.fillStyle = COLORS.figure;
+            ctx.strokeStyle = COLORS.figureStroke;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(cx - r * unit, cy);
+            ctx.lineTo(cx, cy - r * unit);
+            ctx.lineTo(cx, cy);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.rect(cx - r * unit, cy, r * unit, r * unit);
+            ctx.fill();
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, r * unit, 0, Math.PI / 2, false);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.strokeStyle = COLORS.axis;
+            ctx.fillStyle = COLORS.axis;
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(6, cy);
+            ctx.lineTo(w - 6, cy);
+            ctx.moveTo(cx, h - 6);
+            ctx.lineTo(cx, 6);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(w - 6, cy);
+            ctx.lineTo(w - 15, cy - 4);
+            ctx.lineTo(w - 15, cy + 4);
+            ctx.closePath();
+            ctx.moveTo(cx, 6);
+            ctx.lineTo(cx - 4, 15);
+            ctx.lineTo(cx + 4, 15);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.font = '13px Arial, sans-serif';
+            ctx.textBaseline = 'alphabetic';
+            ctx.textAlign = 'left';
+            ctx.fillText('x', w - 14, cy - 10);
+            ctx.fillText('y', cx + 10, 16);
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.textAlign = 'right';
+            ctx.fillText('O', cx - 6, cy + 16);
+
+            ctx.strokeStyle = COLORS.tick;
+            ctx.fillStyle = COLORS.tick;
+            ctx.font = '11px Arial, sans-serif';
+            ctx.lineWidth = 1;
+            for (let i = -nx; i <= nx; i++) {
+                if (i === 0) { continue; }
+                const v = i * xStep;
+                const p = v * unit;
+                ctx.beginPath();
+                ctx.moveTo(cx + p, cy - 3);
+                ctx.lineTo(cx + p, cy + 3);
+                ctx.stroke();
+                ctx.textAlign = 'center';
+                ctx.fillText(String(v), cx + p, cy + 16);
+            }
+            for (let j = -n; j <= n; j++) {
+                if (j === 0) { continue; }
+                const v = j * step;
+                const p = v * unit;
+                ctx.beginPath();
+                ctx.moveTo(cx - 3, cy - p);
+                ctx.lineTo(cx + 3, cy - p);
+                ctx.stroke();
+                ctx.textAlign = 'left';
+                ctx.fillText(v.toFixed(decimals), cx + 7, cy - p + 4);
+            }
+
+            ctx.strokeStyle = COLORS.rMark;
+            ctx.fillStyle = COLORS.rMark;
+            ctx.font = 'bold 12px Arial, sans-serif';
+            [
+                { v: -r, t: '-R' },
+                { v: -r / 2, t: '-R/2' },
+                { v: r / 2, t: 'R/2' },
+                { v: r, t: 'R' }
+            ].forEach(function (m) {
+                const px = cx + m.v * unit;
+                const py = cy - m.v * unit;
+                ctx.beginPath();
+                ctx.moveTo(px, cy - 5);
+                ctx.lineTo(px, cy + 5);
+                ctx.moveTo(cx - 5, py);
+                ctx.lineTo(cx + 5, py);
+                ctx.stroke();
+                if (px > 0 && px < w) {
+                    ctx.textAlign = 'center';
+                    ctx.fillText(m.t, px, cy - 10);
+                }
+                if (py > 0 && py < h) {
+                    ctx.textAlign = 'right';
+                    ctx.fillText(m.t, cx - 9, py + 4);
+                }
+            });
+
+            plotPoints = [];
+            results.forEach(function (item) {
+                const px = cx + item.x * unit;
+                const py = cy - item.y * unit;
+                if (px < -8 || px > w + 8 || py < -8 || py > h + 8) {
+                    return;
+                }
+                plotPoints.push({ id: item.id, px: px, py: py });
+                ctx.globalAlpha = item.r === r ? 1 : 0.4;
+                ctx.fillStyle = item.hit ? COLORS.hit : COLORS.miss;
+                ctx.beginPath();
+                ctx.arc(px, py, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.lineWidth = item.inTable ? 2 : 1;
+                ctx.strokeStyle = '#ffffff';
+                if (!item.inTable) {
+                    ctx.setLineDash([2, 2]);
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.globalAlpha = 1;
+
+                if (item.id === selectedId) {
+                    ctx.strokeStyle = COLORS.select;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(px, py, 10, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            });
+            ctx.globalAlpha = 1;
+        }
+
+        function findResult(id) {
+            return results.find(function (r) { return r.id === id; });
+        }
+
+        function hideTooltip() {
+            tooltip.style.display = 'none';
+            tooltip.textContent = '';
+        }
+
+        function showTooltip(item, point) {
+            tooltip.textContent = '';
+            const lines = [
+                'X = ' + fmtFull(item.x),
+                'Y = ' + fmtFull(item.yRaw),
+                'R = ' + fmtFull(item.r),
+                'Попадание: ' + (item.hit ? 'да' : 'нет'),
+                formatDate(item.ts)
+            ];
+            lines.forEach(function (text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                tooltip.appendChild(div);
+            });
+            const note = document.createElement('div');
+            note.className = 'tt-note';
+            note.textContent = item.inTable
+                ? 'Уже в таблице'
+                : 'Кликните ещё раз, чтобы добавить в таблицу';
+            tooltip.appendChild(note);
+
+            const rect = canvas.getBoundingClientRect();
+            const k = rect.width / canvas.width;
+            tooltip.style.display = 'block';
+            let left = point.px * k + 14;
+            let top = point.py * k + 14;
+            if (left + tooltip.offsetWidth > rect.width) {
+                left = point.px * k - tooltip.offsetWidth - 14;
+            }
+            if (top + tooltip.offsetHeight > rect.height) {
+                top = point.py * k - tooltip.offsetHeight - 14;
+            }
+            tooltip.style.left = Math.max(0, left) + 'px';
+            tooltip.style.top = Math.max(0, top) + 'px';
+        }
+
+        function setPlotStatus(text) {
+            if (plotStatus) {
+                plotStatus.textContent = text;
+            }
+        }
+
+        function canvasPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const k = canvas.width / rect.width;
+            return { x: (e.clientX - rect.left) * k, y: (e.clientY - rect.top) * k };
+        }
+
+        function nearestPoint(mx, my) {
+            let best = null;
+            let bestDist = 7;
+            plotPoints.forEach(function (p) {
+                const d = Math.hypot(p.px - mx, p.py - my);
+                if (d <= bestDist) {
+                    bestDist = d;
+                    best = p;
+                }
+            });
+            return best;
+        }
+
+        canvas.addEventListener('click', function (e) {
+            if (e.detail >= 2) {
+                return;
+            }
+            const pos = canvasPos(e);
+            const best = nearestPoint(pos.x, pos.y);
+
+            if (!best) {
+                selectedId = null;
+                hideTooltip();
+                drawPlot();
+                return;
+            }
+
+            const item = findResult(best.id);
+            if (!item) {
+                return;
+            }
+
+            if (selectedId === item.id) {
+                if (!item.inTable) {
+                    item.inTable = true;
+                    saveResults();
+                    renderTable();
+                }
+                selectedId = null;
+                hideTooltip();
+                drawPlot();
+            } else {
+                selectedId = item.id;
+                drawPlot();
+                showTooltip(item, best);
+            }
+        });
+
+        canvas.addEventListener('wheel', function (e) {
+            e.preventDefault();
+            zoom *= e.deltaY < 0 ? 1.12 : 1 / 1.12;
+            zoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, zoom));
+            hideTooltip();
+            selectedId = null;
+            drawPlot();
+        }, { passive: false });
+
+        zoomResetBtn.addEventListener('click', function () {
+            zoom = 1;
+            hideTooltip();
+            selectedId = null;
+            drawPlot();
+        });
+
+        function renderTable() {
+            resultsBody.textContent = '';
+            results
+                .filter(function (item) { return item.inTable; })
+                .sort(function (a, b) { return b.ts - a.ts; })
+                .forEach(function (item) {
+                    const tr = document.createElement('tr');
+
+                    [
+                        { text: fmtShort(item.x, 4), full: fmtFull(item.x) },
+                        { text: fmtShort(item.yRaw, 4), full: fmtFull(item.yRaw) },
+                        { text: fmtShort(item.r, 4), full: fmtFull(item.r) }
+                    ].forEach(function (c) {
+                        const td = document.createElement('td');
+                        td.textContent = c.text;
+                        td.title = c.full;
+                        td.dataset.full = c.full;
+                        tr.appendChild(td);
+                    });
+
+                    const hitTd = document.createElement('td');
+                    hitTd.textContent = item.hit ? 'Попал' : 'Мимо';
+                    hitTd.className = item.hit ? 'hit-true' : 'hit-false';
+                    tr.appendChild(hitTd);
+
+                    const dateTd = document.createElement('td');
+                    dateTd.textContent = formatDate(item.ts);
+                    tr.appendChild(dateTd);
+
+                    resultsBody.appendChild(tr);
+                });
+            lastTableText = resultsBody.textContent;
+        }
+
+        function tzSignature() {
+            const opts = Intl.DateTimeFormat().resolvedOptions();
+            const langs = navigator.languages && navigator.languages.length ? navigator.languages.join(',') : navigator.language;
+            return opts.locale + '|' + opts.timeZone + '|' + new Date().getTimezoneOffset() + '|' + langs;
+        }
+
+        function updateTzInfo() {
+            const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const offset = -new Date().getTimezoneOffset();
+            const sign = offset >= 0 ? '+' : '-';
+            const abs = Math.abs(offset);
+            const hh = String(Math.floor(abs / 60)).padStart(2, '0');
+            const mm = String(abs % 60).padStart(2, '0');
+            tzInfo.textContent = 'Язык: ' + getLocale();
+        }
+
+        let lastTz = tzSignature();
+
+        function checkTimezone() {
+            const now = tzSignature();
+            if (now !== lastTz) {
+                lastTz = now;
+                updateTzInfo();
+                updateLegend();
+                renderTable();
+                selectedId = null;
+                hideTooltip();
+                drawPlot();
+                drawClock();
+            }
+        }
+
+        function isNum(v) {
+            return typeof v === 'number' && Number.isFinite(v);
+        }
+
+        function makeId() {
+            return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+        }
+
+        function normalizeRecord(rec) {
+            if (!rec || typeof rec !== 'object') {
+                return null;
+            }
+            if (!isNum(rec.x) || !X_VALUES.includes(rec.x)) {
+                return null;
+            }
+            if (!isNum(rec.y) || !(rec.y > Y_MIN && rec.y < Y_MAX)) {
+                return null;
+            }
+            if (!isNum(rec.r) || !R_VALUES.includes(rec.r)) {
+                return null;
+            }
+            if (!isNum(rec.ts) || rec.ts <= 0 || rec.ts > 8.64e15) {
+                return null;
+            }
+            const parsed = typeof rec.yRaw === 'string' ? parseY(rec.yRaw) : null;
+            return {
+                id: typeof rec.id === 'string' && rec.id !== '' ? rec.id : makeId(),
+                x: rec.x,
+                y: rec.y,
+                yRaw: parsed && parsed.value === rec.y ? parsed.raw : String(rec.y),
+                r: rec.r,
+                hit: isHit(rec.x, rec.y, rec.r),
+                ts: rec.ts,
+                inTable: rec.inTable === true
+            };
+        }
+
+        function sanitizeList(list) {
+            const seen = new Set();
+            const out = [];
+            list.forEach(function (item) {
+                const rec = normalizeRecord(item);
+                if (!rec) {
+                    return;
+                }
+                if (seen.has(rec.id)) {
+                    rec.id = makeId();
+                }
+                seen.add(rec.id);
+                out.push(rec);
+            });
+            return out;
+        }
+
+        function readRaw() {
+            try {
+                return localStorage.getItem(STORAGE_KEY);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function readKey(key) {
+            try {
+                const data = JSON.parse(localStorage.getItem(key));
+                return Array.isArray(data) ? data : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function writeList(list) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+            } catch (e) {}
+        }
+
+        function loadResults() {
+            const current = readKey(STORAGE_KEY);
+            if (current) {
+                const clean = sanitizeList(current);
+                if (JSON.stringify(clean) !== JSON.stringify(current)) {
+                    writeList(clean);
+                }
+                return clean;
+            }
+            if (readRaw() !== null) {
+                try {
+                    localStorage.removeItem(STORAGE_KEY);
+                } catch (e) {}
+            }
+            const old = readKey(OLD_STORAGE_KEY);
+            if (old) {
+                const migrated = sanitizeList(old.map(function (r) {
+                    return r && typeof r === 'object' ? Object.assign({}, r, { inTable: true }) : r;
+                }));
+                writeList(migrated);
+                try {
+                    localStorage.removeItem(OLD_STORAGE_KEY);
+                } catch (e) {}
+                return migrated;
+            }
+            return [];
+        }
+
+        function saveResults() {
+            writeList(results);
+            lastRaw = readRaw();
+        }
+
+        function syncFromStorage() {
+            const raw = readRaw();
+            if (raw === lastRaw) {
+                return;
+            }
+            results = loadResults();
+            lastRaw = readRaw();
+            selectedId = null;
+            hideTooltip();
+            renderTable();
+            drawPlot();
+            drawClock();
+        }
+
+        window.addEventListener('storage', function (e) {
+            if (e.key === STORAGE_KEY || e.key === null) {
+                syncFromStorage();
+            }
+        });
+
+        const CLOCK_MARK_HALF = 5;
+        const CLOCK_BASE_RHO = 40;
+        const CLOCK_RHO_STEP = 10;
+        const CLOCK_LAYERS = 10;
+
+        function angleDist(a, b) {
+            const d = Math.abs(a - b) % (Math.PI * 2);
+            return Math.min(d, Math.PI * 2 - d);
+        }
+
+        function layoutClockMarks() {
+            const marks = results.map(function (item) {
+                const d = new Date(item.ts);
+                const h = d.getHours();
+                const frac = (h % 12 + d.getMinutes() / 60 + d.getSeconds() / 3600) / 12;
+                return {
+                    item: item,
+                    pm: h >= 12,
+                    angle: frac * Math.PI * 2 - Math.PI / 2,
+                    rho: CLOCK_BASE_RHO
+                };
+            });
+            marks.sort(function (a, b) { return a.angle - b.angle; });
+
+            const layers = [];
+            for (let i = 0; i < CLOCK_LAYERS; i++) { layers.push([]); }
+
+            marks.forEach(function (m, idx) {
+                let placed = false;
+                for (let L = 0; L < CLOCK_LAYERS && !placed; L++) {
+                    const rho = CLOCK_BASE_RHO + L * CLOCK_RHO_STEP;
+                    const minGap = (CLOCK_MARK_HALF * 2 + 2) / rho;
+                    const free = layers[L].every(function (o) {
+                        return angleDist(o.angle, m.angle) >= minGap;
+                    });
+                    if (free) {
+                        layers[L].push(m);
+                        m.rho = rho;
+                        placed = true;
+                    }
+                }
+                if (!placed) {
+                    const L = idx % CLOCK_LAYERS;
+                    layers[L].push(m);
+                    m.rho = CLOCK_BASE_RHO + L * CLOCK_RHO_STEP;
+                }
+            });
+            return marks;
+        }
+
+        function drawMark(m, cx, cy) {
+            const x = cx + Math.cos(m.angle) * m.rho;
+            const y = cy + Math.sin(m.angle) * m.rho;
+            cctx.globalAlpha = 0.92;
+            cctx.fillStyle = m.item.hit ? COLORS.hit : COLORS.miss;
+            cctx.strokeStyle = '#160c14';
+            cctx.lineWidth = 1.5;
+            cctx.beginPath();
+            if (m.pm) {
+                cctx.rect(x - CLOCK_MARK_HALF, y - CLOCK_MARK_HALF, CLOCK_MARK_HALF * 2, CLOCK_MARK_HALF * 2);
+            } else {
+                cctx.arc(x, y, CLOCK_MARK_HALF, 0, Math.PI * 2);
+            }
+            cctx.fill();
+            cctx.stroke();
+            cctx.globalAlpha = 1;
+        }
+
+        function drawHand(cx, cy, angle, length, width, color) {
+            cctx.strokeStyle = color;
+            cctx.lineWidth = width;
+            cctx.lineCap = 'round';
+            cctx.beginPath();
+            cctx.moveTo(cx - Math.cos(angle) * 10, cy - Math.sin(angle) * 10);
+            cctx.lineTo(cx + Math.cos(angle) * length, cy + Math.sin(angle) * length);
+            cctx.stroke();
+        }
+
+        function localeNumber(n) {
+            return new Intl.NumberFormat(getLocale()).format(n);
+        }
+
+        function dayPeriodLabel(isPm) {
+            const d = new Date(2020, 0, 1, isPm ? 15 : 9);
+            const parts = new Intl.DateTimeFormat(getLocale(), { hour: 'numeric', hour12: true }).formatToParts(d);
+            const p = parts.find(function (x) { return x.type === 'dayPeriod'; });
+            return p ? p.value : (isPm ? 'PM' : 'AM');
+        }
+
+        function updateLegend() {
+            if (amLabel) {
+                amLabel.textContent = dayPeriodLabel(false);
+            }
+            if (pmLabel) {
+                pmLabel.textContent = dayPeriodLabel(true);
+            }
+        }
+
+        function drawClock() {
+            const w = clockCanvas.width;
+            const cx = w / 2;
+            const cy = w / 2;
+            const radius = w / 2 - 8;
+
+            cctx.clearRect(0, 0, w, w);
+
+            const grad = cctx.createRadialGradient(cx, cy, 10, cx, cy, radius);
+            grad.addColorStop(0, '#2a1420');
+            grad.addColorStop(1, '#160c14');
+            cctx.fillStyle = grad;
+            cctx.strokeStyle = '#ffffff';
+            cctx.lineWidth = 2;
+            cctx.beginPath();
+            cctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            cctx.fill();
+            cctx.stroke();
+
+            cctx.strokeStyle = '#ffffff';
+            for (let i = 0; i < 60; i++) {
+                const a = (i / 60) * Math.PI * 2;
+                const len = i % 5 === 0 ? 9 : 4;
+                cctx.lineWidth = i % 5 === 0 ? 2 : 1;
+                cctx.beginPath();
+                cctx.moveTo(cx + Math.cos(a) * (radius - 2), cy + Math.sin(a) * (radius - 2));
+                cctx.lineTo(cx + Math.cos(a) * (radius - 2 - len), cy + Math.sin(a) * (radius - 2 - len));
+                cctx.stroke();
+            }
+
+            cctx.fillStyle = '#ffffff';
+            cctx.font = '14px Arial, sans-serif';
+            cctx.textAlign = 'center';
+            cctx.textBaseline = 'middle';
+            for (let n = 1; n <= 12; n++) {
+                const a = (n / 12) * Math.PI * 2 - Math.PI / 2;
+                cctx.fillText(localeNumber(n), cx + Math.cos(a) * (radius - 24), cy + Math.sin(a) * (radius - 24));
+            }
+
+            const now = new Date();
+            if (clockDigital) {
+                clockDigital.textContent = now.toLocaleTimeString(getLocale(), {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZoneName: 'short'
+                });
+            }
+            const s = now.getSeconds() + now.getMilliseconds() / 1000;
+            const m = now.getMinutes() + s / 60;
+            const h = (now.getHours() % 12) + m / 60;
+            const off = -Math.PI / 2;
+            drawHand(cx, cy, (h / 12) * Math.PI * 2 + off, radius * 0.5, 4, '#ffffff');
+            drawHand(cx, cy, (m / 60) * Math.PI * 2 + off, radius * 0.75, 3, '#ffffff');
+            drawHand(cx, cy, (Math.floor(s) / 60) * Math.PI * 2 + off, radius * 0.85, 1.5, '#ff3b3b');
+
+            layoutClockMarks().forEach(function (mk) { drawMark(mk, cx, cy); });
+
+            cctx.fillStyle = '#ff3b3b';
+            cctx.beginPath();
+            cctx.arc(cx, cy, 4, 0, Math.PI * 2);
+            cctx.fill();
+            cctx.textBaseline = 'alphabetic';
+        }
+
+        xSelect.addEventListener('change', updateSubmitState);
+
+        yInput.addEventListener('input', function () {
+            const cleaned = yInput.value.replace(/[^0-9.,-]/g, '');
+            if (cleaned !== yInput.value) {
+                yInput.value = cleaned;
+            }
+            updateSubmitState();
+        });
+
+        rGroup.addEventListener('change', function () {
+            updateSubmitState();
+            selectedId = null;
+            hideTooltip();
+            drawPlot();
+        });
+
+        function addResult(x, y, r, inTable) {
+            const rec = normalizeRecord({
+                id: makeId(),
+                x: x,
+                y: y.value,
+                yRaw: y.raw,
+                r: r,
+                ts: Date.now(),
+                inTable: inTable
+            });
+            if (!rec) {
+                setPlotStatus('Недопустимые значения: точка не добавлена.');
+                return false;
+            }
+            results.push(rec);
+            saveResults();
+            renderTable();
+            drawPlot();
+            drawClock();
+            return true;
+        }
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const x = validateX(true);
+            const y = validateY(true);
+            const r = validateR(true);
+            if (x === null || y === null || r === null) {
+                return;
+            }
+            if (addResult(x, y, r, true)) {
+                setPlotStatus('Точка добавлена: X = ' + x + ', Y = ' + y.raw + ', R = ' + r);
+            }
+        });
+
+        canvas.addEventListener('dblclick', function (e) {
+            e.preventDefault();
+            const pos = canvasPos(e);
+            const picked = getSelectedR();
+            let r;
+            if (picked === null) {
+                r = DEFAULT_R;
+                const radio = rGroup.querySelector('input[name="r"][value="' + r + '"]');
+                if (radio) {
+                    radio.checked = true;
+                }
+            } else if (R_VALUES.includes(picked)) {
+                r = picked;
+            } else {
+                rError.textContent = 'Недопустимое значение R';
+                setPlotStatus('Недопустимое значение R: точка не добавлена.');
+                return;
+            }
+            rError.textContent = '';
+            const unit = (R_PIXELS / r) * zoom;
+            const half = (canvas.width / 2) / unit;
+            const step = niceStep(half * 2, 8);
+            const xStep = Math.max(1, step);
+            const mathX = (pos.x - canvas.width / 2) / unit;
+            const mathY = (canvas.height / 2 - pos.y) / unit;
+
+            const x = Number((Math.round(mathX / xStep) * xStep).toFixed(6));
+            if (!X_VALUES.includes(x)) {
+                setPlotStatus('X должен быть целым от -5 до 3. Выберите вершину ближе к центру.');
+                return;
+            }
+            let yRaw = String(Number((Math.round(mathY / step) * step).toFixed(6)));
+            if (yRaw === '-0') {
+                yRaw = '0';
+            }
+            const y = parseY(yRaw);
+            if (y.error) {
+                setPlotStatus(y.error);
+                return;
+            }
+
+            xSelect.value = String(x);
+            yInput.value = y.raw;
+            xError.textContent = '';
+            yError.textContent = '';
+            yInput.classList.remove('invalid');
+            updateSubmitState();
+            selectedId = null;
+            hideTooltip();
+            if (addResult(x, y, r, true)) {
+                setPlotStatus('Точка добавлена: X = ' + x + ', Y = ' + y.raw + ', R = ' + r);
+            }
+        });
+
+        resetBtn.addEventListener('click', function () {
+            form.reset();
+            xSelect.selectedIndex = 0;
+            yInput.classList.remove('invalid');
+            xError.textContent = '';
+            yError.textContent = '';
+            rError.textContent = '';
+            submitBtn.disabled = false;
+            selectedId = null;
+            hideTooltip();
+            drawPlot();
+        });
+
+        clearHistoryBtn.addEventListener('click', function () {
+            results = [];
+            selectedId = null;
+            hideTooltip();
+            saveResults();
+            renderTable();
+            drawPlot();
+            drawClock();
+        });
+
+        function guardTable() {
+            if (resultsBody.textContent !== lastTableText) {
+                renderTable();
+            }
+        }
+
+        function refreshLocale() {
+            lastTz = '';
+            checkTimezone();
+        }
+
+        setInterval(checkTimezone, 1000);
+        setInterval(syncFromStorage, 1000);
+        setInterval(guardTable, 1000);
+        setInterval(drawClock, 1000);
+        window.addEventListener('focus', checkTimezone);
+        window.addEventListener('focus', syncFromStorage);
+        window.addEventListener('languagechange', refreshLocale);
+        document.addEventListener('visibilitychange', checkTimezone);
+        document.addEventListener('visibilitychange', syncFromStorage);
+
+        updateTzInfo();
+        updateLegend();
+        renderTable();
+        drawPlot();
+        drawClock();
+        window.addPointAt = function (x, y, t, r) {
+            x = Number(x);
+            r = r === undefined ? currentR() : Number(r);
+            const yParsed = parseY(String(y));
+            let ts;
+            if (typeof t === 'string' && /^\d{1,2}:\d{2}(:\d{2})?$/.test(t.trim())) {
+                const p = t.trim().split(':').map(Number);
+                ts = new Date().setHours(p[0], p[1], p[2] || 0, 0);
+            } else {
+                ts = new Date(t).getTime();
+            }
+            if (!X_VALUES.includes(x)) {
+                console.error('X должен быть одним из: ' + X_VALUES.join(', '));
+                return null;
+            }
+            if (yParsed.error) {
+                console.error(yParsed.error);
+                return null;
+            }
+            if (!R_VALUES.includes(r)) {
+                console.error('R должен быть одним из: ' + R_VALUES.join(', '));
+                return null;
+            }
+            if (!isNum(ts) || ts <= 0) {
+                console.error('не валидное время: ' + t);
+                return null;
+            }
+            const rec = normalizeRecord({
+                id: makeId(),
+                x: x,
+                y: yParsed.value,
+                yRaw: yParsed.raw,
+                r: r,
+                ts: ts,
+                inTable: true
+            });
+            if (!rec) {
+                console.error('Недопустимые значения: точка не добавлена');
+                return null;
+            }
+            results.push(rec);
+            saveResults();
+            renderTable();
+            drawPlot();
+            drawClock();
+            console.log('Добавлено: X = ' + x + ', Y = ' + rec.yRaw + ', R = ' + r + ', ' +
+                (rec.hit ? 'попал' : 'мимо') + ', ' + formatDate(ts));
+            return rec;
+        };
+
+        window.lab1Ready = true;
+    })();
+</script>
+</body>
+</html>
