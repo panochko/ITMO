@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1010" viewBox="0 0 1480 1010" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="aK" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#111"/></marker>
+<marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#d10000"/></marker>
+</defs>
+<rect width="1480" height="1010" fill="#fff"/>
+<g transform="translate(130,110)">
+<rect x="0" y="60" width="110" height="56" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="55.0" y="93.0" text-anchor="middle" font-size="15" font-weight="600">PC</text>
+<polygon points="30,190 80,190 110,246 0,246" fill="#fff" stroke="#111" stroke-width="2" stroke-linejoin="round"/>
+<text x="55" y="226" text-anchor="middle" font-size="14" font-weight="600">MUX_PC</text>
+<circle cx="240" cy="218" r="32" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="240" y="223" text-anchor="middle" font-size="14" font-weight="600">+1</text>
+<text x="240" y="266" text-anchor="middle" font-size="11.5" fill="#444" >инкремент</text>
+<polygon points="290,56 400,72 400,104 290,120" fill="#fff" stroke="#111" stroke-width="2" stroke-linejoin="round"/>
+<text x="345" y="93" text-anchor="middle" font-size="14" font-weight="600">MUX_AR</text>
+<rect x="480" y="60" width="100" height="56" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="530.0" y="84.0" text-anchor="middle" font-size="15" font-weight="600">AR</text>
+<text x="530.0" y="102.0" text-anchor="middle" font-size="11.5" fill="#444">address reg</text>
+<rect x="720" y="40" width="300" height="210" fill="#fff" stroke="#111" stroke-width="2.5"/>
+<text x="870" y="64" text-anchor="middle" font-size="15" fill="#111" font-weight="700">Память (фон Нейман)</text>
+<rect x="740" y="100" width="260" height="44" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="870.0" y="118.0" text-anchor="middle" font-size="14" font-weight="600">RAM</text>
+<text x="870.0" y="136.0" text-anchor="middle" font-size="11.5" fill="#444">команды и данные</text>
+<rect x="740" y="152" width="260" height="36" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="870.0" y="175.0" text-anchor="middle" font-size="12.5" font-weight="600">порт ввода (memory-mapped)</text>
+<rect x="740" y="196" width="260" height="36" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="870.0" y="219.0" text-anchor="middle" font-size="12.5" font-weight="600">порт вывода (memory-mapped)</text>
+<rect x="290" y="330" width="150" height="60" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="365.0" y="356.0" text-anchor="middle" font-size="15" font-weight="600">IR</text>
+<text x="365.0" y="374.0" text-anchor="middle" font-size="11.5" fill="#444">регистр конвейера IF/EX</text>
+<polygon points="460,470 570,470 550,520 480,520" fill="#fff" stroke="#111" stroke-width="2" stroke-linejoin="round"/>
+<text x="515" y="501" text-anchor="middle" font-size="14" font-weight="600">MUX_B</text>
+<polygon points="660,430 660,580 810,505" fill="#fff" stroke="#111" stroke-width="2" stroke-linejoin="round"/>
+<text x="710" y="510" text-anchor="middle" font-size="17" font-weight="600">ALU</text>
+<rect x="920" y="480" width="120" height="60" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="980.0" y="506.0" text-anchor="middle" font-size="16" font-weight="600">ACC</text>
+<text x="980.0" y="524.0" text-anchor="middle" font-size="11.5" fill="#444">аккумулятор 32 бит</text>
+<circle cx="685" cy="632" r="34" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="685" y="629" text-anchor="middle" font-size="13" font-weight="600">Flags</text>
+<text x="685" y="646" text-anchor="middle" font-size="11.5" fill="#444">N Z V C</text>
+<rect x="0" y="740" width="1040" height="120" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="520.0" y="796.0" text-anchor="middle" font-size="17" font-weight="600">Control Unit</text>
+<text x="520.0" y="814.0" text-anchor="middle" font-size="11.5" fill="#444">декодер + FSM; hazard unit: STALL (EX занимает память), FLUSH (переход)</text>
+<path d="M 110 76 L 290 76" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<circle cx="240" cy="76" r="3.6" fill="#111"/>
+<path d="M 240 76 L 240 186" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="175" y="68" text-anchor="middle" font-size="11.5" fill="#222" >PC</text>
+<path d="M 208 218 L 150 218 L 150 266 L 80 266 L 80 246" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="180" y="210" text-anchor="middle" font-size="11.5" fill="#222" >PC+1</text>
+<path d="M 55 190 L 55 116" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<path d="M 400 88 L 480 88" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<path d="M 580 88 L 720 88" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="650" y="80" text-anchor="middle" font-size="12" fill="#222" >addr</text>
+<path d="M 1020 88 L 1080 88 L 1080 360 L 440 360" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<circle cx="550" cy="360" r="3.6" fill="#111"/>
+<path d="M 550 360 L 550 470" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="1090" y="230" text-anchor="start" font-size="12" fill="#222" >rdata</text>
+<text x="760" y="352" text-anchor="middle" font-size="12" fill="#222" >rdata (инструкция)</text>
+<path d="M 1040 510 L 1140 510 L 1140 24 L 940 24 L 940 40" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="1150" y="300" text-anchor="start" font-size="12" fill="#222" >wdata</text>
+<path d="M 780 310 L 780 250" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="780" y="328" text-anchor="middle" font-size="12" fill="#222" >input</text>
+<path d="M 980 250 L 980 310" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="980" y="328" text-anchor="middle" font-size="12" fill="#222" >output</text>
+<path d="M 345 330 L 345 150 L 270 150 L 270 104 L 290 104" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<circle cx="345" cy="280" r="3.6" fill="#111"/>
+<path d="M 345 280 L 30 280 L 30 246" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="190" y="298" text-anchor="middle" font-size="12" fill="#222" >operand (адрес перехода)</text>
+<text x="352" y="220" text-anchor="start" font-size="12" fill="#222" >operand</text>
+<path d="M 400 390 L 400 430 L 490 430 L 490 470" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="405" y="418" text-anchor="start" font-size="12" fill="#222" >operand (imm / адрес)</text>
+<path d="M 320 390 L 320 740" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="326" y="560" text-anchor="start" font-size="12" fill="#222" >opcode</text>
+<path d="M 515 520 L 515 555 L 660 555" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<path d="M 980 480 L 980 420 L 640 420 L 640 455 L 660 455" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="850" y="412" text-anchor="middle" font-size="12" fill="#222" >A = ACC</text>
+<path d="M 810 505 L 920 505" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="865" y="497" text-anchor="middle" font-size="12" fill="#222" >результат</text>
+<path d="M 685 567.5 L 685 598" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<path d="M 685 666 L 685 740" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="678" y="700" text-anchor="end" font-size="12" fill="#222" >N Z V C</text>
+<path d="M 0 837 L -94 837 L -94 -34 L 750 -34 L 750 40" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="8" y="841" font-size="11.5" fill="#d10000" font-weight="600">MEM_WR</text>
+<path d="M 0 820 L -78 820 L -78 -12 L 790 -12 L 790 40" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="8" y="824" font-size="11.5" fill="#d10000" font-weight="600">MEM_RD</text>
+<path d="M 0 803 L -62 803 L -62 10 L 530 10 L 530 60" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="8" y="807" font-size="11.5" fill="#d10000" font-weight="600">AR_WR</text>
+<path d="M 0 786 L -46 786 L -46 32 L 345 32 L 345 64" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="8" y="790" font-size="11.5" fill="#d10000" font-weight="600">MUX_AR_SEL</text>
+<path d="M 0 769 L -30 769 L -30 88 L 0 88" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="8" y="773" font-size="11.5" fill="#d10000" font-weight="600">PC_WR</text>
+<path d="M 0 752 L -14 752 L -14 218 L 15 218" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="8" y="756" font-size="11.5" fill="#d10000" font-weight="600">MUX_PC_SEL</text>
+<path d="M 210 740 L 210 360 L 290 360" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="216" y="600" text-anchor="start" font-size="11.5" fill="#d10000" font-weight="600">IR_WR</text>
+<path d="M 420 740 L 420 495 L 470 495" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="426" y="640" text-anchor="start" font-size="11.5" fill="#d10000" font-weight="600">MUX_B_SEL</text>
+<path d="M 785 740 L 785 517.5" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="791" y="600" text-anchor="start" font-size="11.5" fill="#d10000" font-weight="600">ALU_OP</text>
+<path d="M 762 740 L 762 632 L 719 632" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="756" y="712" text-anchor="end" font-size="11.5" fill="#d10000" font-weight="600">FLAGS_WR</text>
+<path d="M 980 740 L 980 540" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="986" y="640" text-anchor="start" font-size="11.5" fill="#d10000" font-weight="600">ACC_WR</text>
+<line x1="-120" y1="300" x2="1200" y2="300" stroke="#777" stroke-width="1.2" stroke-dasharray="3 6" opacity="0"/>
+<text x="1080" y="400" text-anchor="start" font-size="12" fill="#222" ></text>
+<text x="170" y="150" text-anchor="middle" font-size="12" fill="#666" font-style="italic">стадия IF</text>
+<text x="600" y="640" text-anchor="middle" font-size="12" fill="#666" font-style="italic">стадия EX</text>
+<rect x="1070" y="600" width="230" height="110" fill="#fff" stroke="#777" stroke-width="1"/>
+<text x="1082" y="622" text-anchor="start" font-size="13" fill="#111" font-weight="700">Обозначения</text>
+<path d="M 1082 646 L 1132 646" fill="none" stroke="#111" stroke-width="2" marker-end="url(#aK)"/>
+<text x="1142" y="650" text-anchor="start" font-size="12" fill="#222" >данные / адреса</text>
+<path d="M 1082 672 L 1132 672" fill="none" stroke="#d10000" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aR)"/>
+<text x="1142" y="676" text-anchor="start" font-size="12" fill="#222" >управляющие сигналы</text>
+<text x="1082" y="698" text-anchor="start" font-size="11.5" fill="#555" >стрелка = направление передачи</text>
+<text x="0" y="-70" text-anchor="start" font-size="17" fill="#111" font-weight="700">acc32-neumann-pipeline-2: микроархитектура (DataPath + Control Unit)</text>
+</g>
+</svg>
